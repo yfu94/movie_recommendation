@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations</title>
+    <script>
+        function validateFormRating(event) {
+            const titleInput = document.getElementById("rating").value.trim();
+            if (titleInput === "") {
+                event.preventDefault(); // Prevent form submission
+                alert("You haven't input anything, try again!");
+                return false;
+            }
+
+            // Check if the input is a valid number
+            const rating = parseFloat(titleInput);
+            if (isNaN(rating)) {
+                event.preventDefault(); // Prevent form submission
+                alert("Please enter a valid number for the rating.");
+                return false;
+            }
+
+            // Check if the number is within 0-10
+            if (rating < 0 || rating > 10) {
+                event.preventDefault(); 
+                alert("Rating must be between 0 and 10.");
+                return false;
+            }
+            return true;
+        }
+
+        function validateFormGenre(event) {
+            const titleInput = document.getElementById("genre").value.trim();
+            if (titleInput === "") {
+                event.preventDefault(); // Prevent form submission
+                alert("You haven't input anything, try again!");
+                return false;
+            }
+            return true;
+        }
+
+        // Function to handle the form validation before submission
+        function validateForm(event) {
+            const recommendationType = document.getElementById("recommendation_type").value;
+
+            // If genre is selected, validate genre input
+            if (recommendationType === "genre") {
+                return validateFormGenre(event);
+            }
+
+            // If rating is selected, validate rating input
+            if (recommendationType === "rating") {
+                return validateFormRating(event);
+            }
+
+            // If no recommendation type is selected, prevent form submission
+            event.preventDefault();
+            alert("Please select a recommendation type (Genre or Rating).");
+            return false;
+        }
+    </script>
+
+
+</head>
+<body>
+    <h1>Movie Recommendations</h1>
+    <form method="POST" onsubmit="return validateForm(event)">
+        <!-- Recommendation Type -->
+        <label for="recommendation_type">Recommend Based On:</label>
+        <select id="recommendation_type" name="recommendation_type" required>
+            <option value="">-- Select --</option>
+            <option value="genre">Genre</option>
+            <option value="rating">Rating</option>
+        </select>
+        <br><br>
+
+        <!-- Genre Input -->
+        <div id="genre_input" style="display: none;">
+            <form method="POST" onsubmit="return validateFormGenre(event)">
+                <label for="genre">Enter Genre:</label>
+                <input type="text" id="genre" name="genre" placeholder="e.g. Action" required>
+                <br>
+            </form>
+        </div>
+
+        <!-- Rating Input -->
+        <div id="rating_input" style="display: none;">
+            <form method="POST" onsubmit="return validateFormRating(event)">
+                <label for="rating">Enter Minimum Rating (Entered number should be between 0 and 10):</label>
+                <input type="text" id="rating" name="rating" placeholder="e.g., 7.5" required>
+                <br>
+            </form>
+        </div>
+
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    <br>
+    <br>
+    <a href="/">Go back to the main page</a>
+
+    <script>
+        // JavaScript to toggle input fields based on recommendation type
+        document.getElementById("recommendation_type").addEventListener("change", function () {
+            const selected = this.value;
+            document.getElementById("genre_input").style.display = selected === "genre" ? "block" : "none";
+            document.getElementById("rating_input").style.display = selected === "rating" ? "block" : "none";
+        });
+    </script>
+</body>
+</html>

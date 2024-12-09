@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search by year</title>
+    <script>
+        function validateForm(event) {
+            const titleInput = document.getElementById("year").value.trim();
+            if (titleInput === "") {
+                event.preventDefault(); // Prevent form submission
+                alert("You haven't input anything, try again!");
+                return false;
+            }
+
+            // Check if the input is a valid number
+            const year = parseInt(titleInput);
+            if (isNaN(year)) {
+                event.preventDefault(); // Prevent form submission
+                alert("Please enter a valid number for the year in form of an integer!");
+                return false;
+            }
+
+            // Check if the number is within range
+            if (year < 0 || year > 2024) {
+                event.preventDefault(); 
+                alert("The year you input doesn't exist, try again!");
+                return false;
+            }
+            return true;
+    }
+    </script>
+</head>
+<body>
+    <h1>Search Movies by year</h1>
+
+    <form method="POST" onsubmit="return validateForm(event)">
+        <label for="year">Enter year:</label>
+        <input type="text" id="year" name="year" placeholder="e.g., 2012" required>
+        <input type="submit" value="Search">
+        <br>
+    </form>
+
+    <br>
+    <a href="/">Go back to the main page</a>
+</body>
+</html>

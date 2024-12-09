@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <a href="/">Go back to the main page</a>
+    <br>
+    <br>
+    <a href="{% if source == 'search_by_title' %}/search_by_title
+    {% elif source == 'search_by_genre' %}/search_by_genre
+    {% elif source == 'sort_by_rating' %}/search_by_rating
+    {% elif source == 'sort_by_year' %}/search_by_year
+    {% elif source == 'top_rated_movies' %}/top_rated_movies
+    {% endif %}">
+    Do another search
+    </a>
+</head>
+<h1>Search Results</h1>
+<h3>{{ message }}</h3>
+<body>
+    {% if results %}
+        {% if source != 'top_rated_movies' %}
+            <form method="POST">
+                <!-- Ranking Options -->
+                <label for="ranking_option">Display movies by (default by {{request.form.get('ranking_option', default_sort)}}):</label>
+                <select name="ranking_option" id="ranking_option">
+                    <option value="title" 
+                        {% if request.form.get('ranking_option', default_sort) == 'title' %}selected{% endif %}>
+                        Title
+                    </option>
+                    <option value="rating" 
+                        {% if request.form.get('ranking_option', default_sort) == 'rating' %}selected{% endif %}>
+                        Rating
+                    </option>
+                    <option value="year" 
+                        {% if request.form.get('ranking_option', default_sort) == 'year' %}selected{% endif %}>
+                        Year
+                    </option>
+                </select>
+
+                <!-- Hidden Inputs to Pass Context -->
+                {% if source == "search_by_title" %}
+                    <input type="hidden" name="title" value="{{ request.form.get('title', '') }}">
+                {% elif source == "search_by_genre" %}
+                    <input type="hidden" name="genre" value="{{ request.form.get('genre', '') }}">
+                {% elif source == "search_by_rating" %}
+                    <input type="hidden" name="rating" value="{{ request.form.get('rating', '') }}">
+                {% elif source == "search_by_year" %}
+                    <input type="hidden" name="year" value="{{ request.form.get('year', '') }}">
+                {% endif %}
+                <input type="submit" value="Sort">
+            </form>
+        {% endif %}
+            <br>
+            {% for movie in results %}
+                <li>
+                    <strong>{{ movie.title }}</strong><br>
+                    Year: {{ movie.year }}<br>
+                    Rating: {{ movie.rating }}<br>
+                    Director: {{ movie.director }}<br>
+                    Actors: {{ movie.actors }}<br>
+                    Genre: {{ movie.genre }}<br>
+                    Runtime: {{ movie.runtime }} minutes<br>
+                    <br>
+                </li>
+            {% endfor %}
+
+    {% endif %}
+    
+</body>
+<a href="/">Go back to the main page</a>
+</html>

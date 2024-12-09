@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search by rating</title>
+    <script>
+        function validateForm(event) {
+            const titleInput = document.getElementById("top_n").value.trim();
+            if (titleInput === "") {
+                event.preventDefault(); // Prevent form submission
+                alert("You haven't input anything, try again!");
+                return false;
+            }
+
+            // Check if the input is a valid number
+            const top_n = parseInt(titleInput);
+            if (isNaN(rating)) {
+                event.preventDefault(); // Prevent form submission
+                alert("Invalid input. Please make sure you enter a positive integer!");
+                return false;
+            }
+
+            // Check if the number is within 0-10
+            if (top_n < 0) {
+                event.preventDefault(); 
+                alert("Please make sure you enter a positive integer!");
+                return false;
+            }
+            return true;
+    }
+    </script>
+</head>
+<body>
+    <h1>Top Rated Movies</h1>
+
+    <form method="POST" onsubmit="return validateForm(event)">
+        <label for="rating">Enter number of top rated movies:</label>
+        <input type="text" id="top_n" name="top_n" placeholder="e.g., 10" required>
+        <input type="submit" value="Search">
+        <br>
+    </form>
+
+    <br>
+    <a href="/">Go back to the main page</a>
+</body>
+</html>

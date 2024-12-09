@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation Results</title>
+    <a href="/">Go back to the main page</a>
+    <br>
+    <br>
+    <a href="/recommendation">
+    Back to Recommendations
+    </a>
+</head>
+<h1>Recommendation Result</h1>
+<h3>{{ message }}</h3>
+<body>
+    {% if results %}
+        {% if source != 'top_rated_movies' %}
+            <form method="POST">
+                <!-- Ranking Options -->
+                <label for="ranking_option">Display movies by (default by {{request.form.get('ranking_option', default_sort)}}):</label>
+                <select name="ranking_option" id="ranking_option">
+                    <option value="title" 
+                        {% if request.form.get('ranking_option', default_sort) == 'title' %}selected{% endif %}>
+                        Title
+                    </option>
+                    <option value="rating" 
+                        {% if request.form.get('ranking_option', default_sort) == 'rating' %}selected{% endif %}>
+                        Rating
+                    </option>
+                    <option value="year" 
+                        {% if request.form.get('ranking_option', default_sort) == 'year' %}selected{% endif %}>
+                        Year
+                    </option>
+                </select>
+                <!-- Hidden Inputs to Retain Context -->
+                <input type="hidden" name="recommendation_type" value="{{ recommendation_type }}">
+                    {% if recommendation_type == "genre" %}
+                        <input type="hidden" name="genre" value="{{ request.form.get('genre', '') }}">
+                    {% elif recommendation_type == "rating" %}
+                        <input type="hidden" name="rating" value="{{ request.form.get('rating', '') }}">
+                    {% endif %}
+                <input type="submit" value="Sort">
+            </form>
+        {% endif %}
+            <br>
+            {% for movie in results %}
+                <li>
+                    <strong>{{ movie.title }}</strong><br>
+                    Year: {{ movie.year }}<br>
+                    Rating: {{ movie.rating }}<br>
+                    Director: {{ movie.director }}<br>
+                    Actors: {{ movie.actors }}<br>
+                    Genre: {{ movie.genre }}<br>
+                    Runtime: {{ movie.runtime }} minutes<br>
+                    <br>
+                </li>
+            {% endfor %}
+
+    {% endif %}
+    
+</body>
+<br>
+<br>
+    <a href="/recommendation">Back to Recommendations</a>
+</html>
