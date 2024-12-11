@@ -8,7 +8,6 @@
         function validateFormRating(event) {
             const titleInput = document.getElementById("rating").value.trim();
             if (titleInput === "") {
-                event.preventDefault(); // Prevent form submission
                 alert("You haven't input anything, try again!");
                 return false;
             }
@@ -16,14 +15,12 @@
             // Check if the input is a valid number
             const rating = parseFloat(titleInput);
             if (isNaN(rating)) {
-                event.preventDefault(); // Prevent form submission
                 alert("Please enter a valid number for the rating.");
                 return false;
             }
 
             // Check if the number is within 0-10
             if (rating < 0 || rating > 10) {
-                event.preventDefault(); 
                 alert("Rating must be between 0 and 10.");
                 return false;
             }
@@ -33,7 +30,6 @@
         function validateFormGenre(event) {
             const titleInput = document.getElementById("genre").value.trim();
             if (titleInput === "") {
-                event.preventDefault(); // Prevent form submission
                 alert("You haven't input anything, try again!");
                 return false;
             }
@@ -44,31 +40,33 @@
         function validateForm(event) {
             const recommendationType = document.getElementById("recommendation_type").value;
 
-            // If genre is selected, validate genre input
             if (recommendationType === "genre") {
                 return validateFormGenre(event);
             }
 
-            // If rating is selected, validate rating input
             if (recommendationType === "rating") {
                 return validateFormRating(event);
             }
 
             // If no recommendation type is selected, prevent form submission
-            event.preventDefault();
             alert("Please select a recommendation type (Genre or Rating).");
             return false;
         }
+
+        // JavaScript to toggle input fields based on recommendation type
+        function toggleInputFields() {
+            const selected = document.getElementById("recommendation_type").value;
+            document.getElementById("genre_input").style.display = selected === "genre" ? "block" : "none";
+            document.getElementById("rating_input").style.display = selected === "rating" ? "block" : "none";
+        }
     </script>
-
-
 </head>
 <body>
     <h1>Movie Recommendations</h1>
-    <form method="POST" onsubmit="return validateForm(event)">
+    <form method="POST" action="/recommendation" onsubmit="return validateForm(event)">
         <!-- Recommendation Type -->
         <label for="recommendation_type">Recommend Based On:</label>
-        <select id="recommendation_type" name="recommendation_type" required>
+        <select id="recommendation_type" name="recommendation_type" onchange="toggleInputFields()" required>
             <option value="">-- Select --</option>
             <option value="genre">Genre</option>
             <option value="rating">Rating</option>
@@ -77,36 +75,23 @@
 
         <!-- Genre Input -->
         <div id="genre_input" style="display: none;">
-            <form method="POST" onsubmit="return validateFormGenre(event)">
-                <label for="genre">Enter Genre:</label>
-                <input type="text" id="genre" name="genre" placeholder="e.g. Action" required>
-                <br>
-            </form>
+            <label for="genre">Enter Genre:</label>
+            <input type="text" id="genre" name="genre" placeholder="e.g. Action">
+            <br>
         </div>
 
         <!-- Rating Input -->
         <div id="rating_input" style="display: none;">
-            <form method="POST" onsubmit="return validateFormRating(event)">
-                <label for="rating">Enter Minimum Rating (Entered number should be between 0 and 10):</label>
-                <input type="text" id="rating" name="rating" placeholder="e.g., 7.5" required>
-                <br>
-            </form>
+            <label for="rating">Enter Minimum Rating (0 to 10):</label>
+            <input type="text" id="rating" name="rating" placeholder="e.g., 7.5">
+            <br>
         </div>
-
+        <br>
         <button type="submit">Get Recommendations</button>
     </form>
 
     <br>
     <br>
     <a href="/">Go back to the main page</a>
-
-    <script>
-        // JavaScript to toggle input fields based on recommendation type
-        document.getElementById("recommendation_type").addEventListener("change", function () {
-            const selected = this.value;
-            document.getElementById("genre_input").style.display = selected === "genre" ? "block" : "none";
-            document.getElementById("rating_input").style.display = selected === "rating" ? "block" : "none";
-        });
-    </script>
 </body>
 </html>

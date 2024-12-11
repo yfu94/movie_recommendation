@@ -46,6 +46,7 @@ def load_data(file_path):
             genre_dict[genre].append(movie)
         
     return movies, genre_dict
+# data loading
 movies, genre_dict = load_data('./imdb_movie_dataset.csv')
 
 
@@ -218,10 +219,14 @@ def top_rated_movies():
     if request.method == "POST":
         top_n = request.form["top_n"]
         results, message = rs.get_top_rated_movies(top_n)
+        ranking_option = request.form.get("ranking_option", "rating")  # Default to ranking by year
+        current_source = "top_rated_movies"
+        current_default_sort = "rating"
         if results:
-            return render_template("results_search.html", results=results, message=message, source ="top_rated_movies")
+            ranked_results = rs.rank_movies(results, ranking_option)
+            return render_template("results_search.html", results=ranked_results, message=message, source =current_source, default_sort=current_default_sort)
         else:
-            return render_template("results_search.html", results=None, message=message, source ="top_rated_movies")
+            return render_template("results_search.html", results=None, message=message, source =current_source, default_sort=current_default_sort)
     return render_template("top_rated_movies.html")
 
 @app.route("/recommendation", methods=["POST", "GET"])
@@ -233,7 +238,8 @@ def recommend():
         if recommendation_type == "genre":
             genre = request.form["genre"]
             results, message = rs.get_movies_by_genre(genre)
-            new_message = f"Recommended following movies that you may be interested!"
+            num = min(len(results), 20) # default to top 20 movies 
+            new_message = f"Recommended following {num} movies that you may be interested!"
             ranking_option = request.form.get("ranking_option", "year")  # since member searched genre, let's show latest movie first 
             current_source = "search_by_genre"
             current_default_sort = "year"       

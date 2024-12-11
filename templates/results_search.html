@@ -20,38 +20,39 @@
 <h3>{{ message }}</h3>
 <body>
     {% if results %}
-        {% if source != 'top_rated_movies' %}
-            <form method="POST">
-                <!-- Ranking Options -->
-                <label for="ranking_option">Display movies by (default by {{request.form.get('ranking_option', default_sort)}}):</label>
-                <select name="ranking_option" id="ranking_option">
-                    <option value="title" 
-                        {% if request.form.get('ranking_option', default_sort) == 'title' %}selected{% endif %}>
-                        Title
-                    </option>
-                    <option value="rating" 
-                        {% if request.form.get('ranking_option', default_sort) == 'rating' %}selected{% endif %}>
-                        Rating
-                    </option>
-                    <option value="year" 
-                        {% if request.form.get('ranking_option', default_sort) == 'year' %}selected{% endif %}>
-                        Year
-                    </option>
-                </select>
+        <form method="POST">
+            <!-- Ranking Options -->
+            <label for="ranking_option">Display movies by (default by {{request.form.get('ranking_option', default_sort)}}):</label>
+            <select name="ranking_option" id="ranking_option">
+                <option value="title" 
+                    {% if request.form.get('ranking_option', default_sort) == 'title' %}selected{% endif %}>
+                    Title
+                </option>
+                <option value="rating" 
+                    {% if request.form.get('ranking_option', default_sort) == 'rating' %}selected{% endif %}>
+                    Rating
+                </option>
+                <option value="year" 
+                    {% if request.form.get('ranking_option', default_sort) == 'year' %}selected{% endif %}>
+                    Year
+                </option>
+            </select>
 
-                <!-- Hidden Inputs to Pass Context -->
-                {% if source == "search_by_title" %}
-                    <input type="hidden" name="title" value="{{ request.form.get('title', '') }}">
-                {% elif source == "search_by_genre" %}
-                    <input type="hidden" name="genre" value="{{ request.form.get('genre', '') }}">
-                {% elif source == "search_by_rating" %}
-                    <input type="hidden" name="rating" value="{{ request.form.get('rating', '') }}">
-                {% elif source == "search_by_year" %}
-                    <input type="hidden" name="year" value="{{ request.form.get('year', '') }}">
-                {% endif %}
-                <input type="submit" value="Sort">
-            </form>
-        {% endif %}
+            <!-- Hidden Inputs to Pass Context -->
+            {% if source == "search_by_title" %}
+                <input type="hidden" name="title" value="{{ request.form.get('title', '') }}">
+            {% elif source == "search_by_genre" %}
+                <input type="hidden" name="genre" value="{{ request.form.get('genre', '') }}">
+            {% elif source == "search_by_rating" %}
+                <input type="hidden" name="rating" value="{{ request.form.get('rating', '') }}">
+            {% elif source == "search_by_year" %}
+                <input type="hidden" name="year" value="{{ request.form.get('year', '') }}">
+            {% elif source == "top_rated_movies" %}
+                <input type="hidden" name="top_n" value="{{ request.form.get('top_n') }}">
+            {% endif %}
+            <input type="submit" value="Sort">
+        </form>
+        
             <br>
             {% for movie in results %}
                 <li>

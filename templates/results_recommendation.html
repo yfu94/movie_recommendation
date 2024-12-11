@@ -15,34 +15,32 @@
 <h3>{{ message }}</h3>
 <body>
     {% if results %}
-        {% if source != 'top_rated_movies' %}
-            <form method="POST">
-                <!-- Ranking Options -->
-                <label for="ranking_option">Display movies by (default by {{request.form.get('ranking_option', default_sort)}}):</label>
-                <select name="ranking_option" id="ranking_option">
-                    <option value="title" 
-                        {% if request.form.get('ranking_option', default_sort) == 'title' %}selected{% endif %}>
-                        Title
-                    </option>
-                    <option value="rating" 
-                        {% if request.form.get('ranking_option', default_sort) == 'rating' %}selected{% endif %}>
-                        Rating
-                    </option>
-                    <option value="year" 
-                        {% if request.form.get('ranking_option', default_sort) == 'year' %}selected{% endif %}>
-                        Year
-                    </option>
-                </select>
-                <!-- Hidden Inputs to Retain Context -->
-                <input type="hidden" name="recommendation_type" value="{{ recommendation_type }}">
-                    {% if recommendation_type == "genre" %}
-                        <input type="hidden" name="genre" value="{{ request.form.get('genre', '') }}">
-                    {% elif recommendation_type == "rating" %}
-                        <input type="hidden" name="rating" value="{{ request.form.get('rating', '') }}">
-                    {% endif %}
-                <input type="submit" value="Sort">
-            </form>
-        {% endif %}
+        <form method="POST">
+            <!-- Ranking Options -->
+            <label for="ranking_option">Display movies by (default by {{request.form.get('ranking_option', default_sort)}}):</label>
+            <select name="ranking_option" id="ranking_option">
+                <option value="title" 
+                    {% if request.form.get('ranking_option', default_sort) == 'title' %}selected{% endif %}>
+                    Title
+                </option>
+                <option value="rating" 
+                    {% if request.form.get('ranking_option', default_sort) == 'rating' %}selected{% endif %}>
+                    Rating
+                </option>
+                <option value="year" 
+                    {% if request.form.get('ranking_option', default_sort) == 'year' %}selected{% endif %}>
+                    Year
+                </option>
+            </select>
+            <!-- Hidden Inputs to Retain Context -->
+            <input type="hidden" name="recommendation_type" value="{{ recommendation_type }}">
+                {% if recommendation_type == "genre" %}
+                    <input type="hidden" name="genre" value="{{ request.form.get('genre', '') }}">
+                {% elif recommendation_type == "rating" %}
+                    <input type="hidden" name="rating" value="{{ request.form.get('rating', '') }}">
+                {% endif %}
+            <input type="submit" value="Sort">
+        </form>
             <br>
             {% for movie in results %}
                 <li>
