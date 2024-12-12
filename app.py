@@ -63,7 +63,7 @@ class MovieRecommendationSystem:
                 self.genre_dict[genre] = []
             self.genre_dict.append(new_movie)
 
-    # for final display of result    
+    # for final display of result, thinking of user behavior, we rank by two parameters when ranking by year/rating
     def rank_movies(self, results, ranking_option):
         # Ensure results are sorted based on the ranking_option
         if ranking_option == "title":
@@ -91,14 +91,14 @@ class MovieRecommendationSystem:
 
 
     def get_movies_by_genre(self, user_genre):
-        # unify format for easier search
+        # unify format (lower-case) for easier search
         user_genre = user_genre.lower()
         # Exact match results
         if user_genre in self.genre_dict:
             filtered_movies = self.genre_dict[user_genre]
             return filtered_movies, f"Movies found for genre '{user_genre}':"
         
-        # handle fuzzy matching if no exact match
+        # handle fuzzy matching if no exact match using 3rd party library
         genre_list = list(self.genre_dict.keys())
         best_match, score = process.extractOne(user_genre, genre_list)
         if score < 80:
@@ -187,7 +187,7 @@ def search_by_rating():
     if request.method == "POST":
         rating = request.form["rating"]
         results, message = rs.get_movies_by_rating(rating)
-        ranking_option = request.form.get("ranking_option", "rating")  # Default to ranking by year
+        ranking_option = request.form.get("ranking_option", "rating")  # Default to ranking by rating
         current_source = "search_by_rating"
         current_default_sort = "rating" # since member searched on rating
         if results:
@@ -203,7 +203,7 @@ def search_by_year():
     if request.method == "POST":
         year = request.form["year"]
         results, message = rs.get_movies_by_year(year)
-        ranking_option = request.form.get("ranking_option", "rating")  # Default to ranking by year
+        ranking_option = request.form.get("ranking_option", "rating")  # since year is fixed, show highest rating movie first
         current_source = "search_by_year"
         current_default_sort = "rating"
         if results:
@@ -219,7 +219,7 @@ def top_rated_movies():
     if request.method == "POST":
         top_n = request.form["top_n"]
         results, message = rs.get_top_rated_movies(top_n)
-        ranking_option = request.form.get("ranking_option", "rating")  # Default to ranking by year
+        ranking_option = request.form.get("ranking_option", "rating")  # Default to ranking by rating, since user want top rated movies
         current_source = "top_rated_movies"
         current_default_sort = "rating"
         if results:
@@ -238,7 +238,7 @@ def recommend():
         if recommendation_type == "genre":
             genre = request.form["genre"]
             results, message = rs.get_movies_by_genre(genre)
-            num = min(len(results), 20) # default to top 20 movies 
+            num = min(len(results), 20) # default to top 20 movies, if returned result is less than 20, show number of returned result
             new_message = f"Recommended following {num} movies that you may be interested!"
             ranking_option = request.form.get("ranking_option", "year")  # since member searched genre, let's show latest movie first 
             current_source = "search_by_genre"
@@ -247,11 +247,11 @@ def recommend():
         elif recommendation_type == "rating":
             rating = request.form["rating"]
             results, message = rs.get_movies_by_rating(rating)
-            num = min(len(results), 20) # default to top 20 movies 
+            num = min(len(results), 20) # default to top 20 movies, if returned result is less than 20, show number of returned result 
             new_message = f"Recommended top {num} movies for you!"
-            ranking_option = request.form.get("ranking_option", "rating")  # Default to ranking by year
+            ranking_option = request.form.get("ranking_option", "rating")  # # since member searched on rating
             current_source = "search_by_rating"
-            current_default_sort = "rating" # since member searched on rating
+            current_default_sort = "rating" 
 
         # Limit results to top 20 and render results page
         if results:

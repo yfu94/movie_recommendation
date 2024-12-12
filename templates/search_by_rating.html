@@ -6,22 +6,23 @@
     <title>Search by rating</title>
     <script>
         function validateForm(event) {
+            // Prevent form submission if blank/only spaces input
             const titleInput = document.getElementById("rating").value.trim();
             if (titleInput === "") {
-                event.preventDefault(); // Prevent form submission
+                event.preventDefault();
                 alert("You haven't input anything, try again!");
                 return false;
             }
 
-            // Check if the input is a valid number
+            // Prevent form submission if input is not a valid number
             const rating = parseFloat(titleInput);
             if (isNaN(rating)) {
-                event.preventDefault(); // Prevent form submission
+                event.preventDefault(); 
                 alert("Please enter a valid number for the rating.");
                 return false;
             }
 
-            // Check if the number is within 0-10
+            // Prevent form submission if rating is out of range
             if (rating < 0 || rating > 10) {
                 event.preventDefault(); 
                 alert("Rating must be between 0 and 10.");
