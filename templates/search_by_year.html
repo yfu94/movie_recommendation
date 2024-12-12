@@ -6,23 +6,26 @@
     <title>Search by year</title>
     <script>
         function validateForm(event) {
-            const titleInput = document.getElementById("year").value.trim();
-            if (titleInput === "") {
-                event.preventDefault(); // Prevent form submission
+            // Prevent form submission if blank or only spaces input
+            const yearInput = document.getElementById("year").value.trim();
+            if (yearInput === "") {
+                event.preventDefault(); 
                 alert("You haven't input anything, try again!");
                 return false;
             }
 
-            // Check if the input is a valid number
-            const year = parseInt(titleInput);
-            if (isNaN(year)) {
-                event.preventDefault(); // Prevent form submission
+            // Prevent form submission if not a valid int
+            const year = parseInt(yearInput);
+            if (isNaN(year) || !Number.isInteger(yearInput)) {
+                event.preventDefault(); 
                 alert("Please enter a valid number for the year in form of an integer!");
                 return false;
             }
 
-            // Check if the number is within range
-            if (year < 0 || year > 2024) {
+            // Prevent form submission if year doesn't exist
+            const d = new Date();
+            let current_year = d.getFullYear();
+            if (year < 1900 || year > current_year) {
                 event.preventDefault(); 
                 alert("The year you input doesn't exist, try again!");
                 return false;

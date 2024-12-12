@@ -6,22 +6,23 @@
     <title>Search by rating</title>
     <script>
         function validateForm(event) {
-            const titleInput = document.getElementById("top_n").value.trim();
-            if (titleInput === "") {
-                event.preventDefault(); // Prevent form submission
+            // Prevent form submission if blank or only spaces input
+            const topnInput = document.getElementById("top_n").value.trim();
+            if (topnInput === "") {
+                event.preventDefault(); 
                 alert("You haven't input anything, try again!");
                 return false;
             }
 
-            // Check if the input is a valid number
-            const top_n = parseInt(titleInput);
-            if (isNaN(rating)) {
-                event.preventDefault(); // Prevent form submission
-                alert("Invalid input. Please make sure you enter a positive integer!");
+            // Prevent form submission if not a valid number
+            const top_n = parseInt(topnInput);
+            if (!Number.isInteger(topnInput)) {
+                event.preventDefault(); 
+                alert("Invalid input. Please make sure you enter a valid integer!");
                 return false;
             }
 
-            // Check if the number is within 0-10
+           // Prevent form submission if number is not positive
             if (top_n < 0) {
                 event.preventDefault(); 
                 alert("Please make sure you enter a positive integer!");
