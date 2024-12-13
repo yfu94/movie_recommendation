@@ -6,10 +6,18 @@
     <title>Search by Genre</title>
     <script>
         function validateForm(event) {
-            const titleInput = document.getElementById("genre").value.trim();
-            if (titleInput === "") {
-                event.preventDefault(); // Prevent form submission
+            const genreInput = document.getElementById("genre").value.trim();
+            if (genreInput === "") {
+                event.preventDefault(); 
                 alert("You haven't input anything, try again!");
+                return false;
+            }
+
+            // if a number, invalid genre
+            const genreTest = parseFloat(genreInput);
+            if (Number.isFinite(genreTest)) {
+                event.preventDefault(); 
+                alert("Please enter a valid genre, you entered a number.");
                 return false;
             }
             return true;

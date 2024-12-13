@@ -16,7 +16,7 @@
 
             // Prevent form submission if not a valid int
             const year = parseInt(yearInput);
-            if (isNaN(year) || !Number.isInteger(yearInput)) {
+            if (isNaN(yearInput) || !Number.isInteger(year)) {
                 event.preventDefault(); 
                 alert("Please enter a valid number for the year in form of an integer!");
                 return false;

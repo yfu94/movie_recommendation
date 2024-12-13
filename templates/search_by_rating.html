@@ -7,15 +7,15 @@
     <script>
         function validateForm(event) {
             // Prevent form submission if blank/only spaces input
-            const titleInput = document.getElementById("rating").value.trim();
-            if (titleInput === "") {
+            const ratingInput = document.getElementById("rating").value.trim();
+            if (ratingInput === "") {
                 event.preventDefault();
                 alert("You haven't input anything, try again!");
                 return false;
             }
 
             // Prevent form submission if input is not a valid number
-            const rating = parseFloat(titleInput);
+            const rating = parseFloat(ratingInput);
             if (isNaN(rating)) {
                 event.preventDefault(); 
                 alert("Please enter a valid number for the rating.");

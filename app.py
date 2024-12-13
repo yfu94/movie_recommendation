@@ -75,7 +75,8 @@ class MovieRecommendationSystem:
         return results
 
     def get_movies_by_title(self, user_title):
-        user_title_clean = user_title.strip()
+        # Invalid input handling moved to frontend, prevent from submissiom
+        user_title = user_title.strip()
         # Exact match
         exact_matches = [movie for movie in self.movie_list if movie.title.lower() == user_title.lower()]
         
@@ -96,7 +97,7 @@ class MovieRecommendationSystem:
         # Exact match results
         if user_genre in self.genre_dict:
             filtered_movies = self.genre_dict[user_genre]
-            return filtered_movies, f"Movies found for genre '{user_genre}':"
+            return filtered_movies, f"{len(filtered_movies)} movies found for genre '{user_genre}':"
         
         # handle fuzzy matching if no exact match using 3rd party library
         genre_list = list(self.genre_dict.keys())
@@ -111,7 +112,7 @@ class MovieRecommendationSystem:
 
 
     def get_movies_by_rating(self, user_rating):
-        # other error handling done in html, prevent from submission
+        # Invalid input handling moved to frontend, prevent from submissiom
         user_rating = float(user_rating.strip())
         # Filter movies based on the minimum rating
         filtered_movies = [movie for movie in self.movie_list if movie.rating >= user_rating]
@@ -121,7 +122,7 @@ class MovieRecommendationSystem:
     
 
     def get_movies_by_year(self, user_year):
-        # other error handling done in html, prevent from submission
+        # Invalid input handling moved to frontend, prevent from submissiom
         user_year = int(user_year.strip())
         filtered_movies = [movie for movie in self.movie_list if movie.year == user_year]
         if not filtered_movies:
@@ -130,7 +131,7 @@ class MovieRecommendationSystem:
     
 
     def get_top_rated_movies(self, user_top_n):
-        # other error handling done in html, prevent from submission
+        # Invalid input handling moved to frontend, prevent from submissiom
         user_top_n = int(user_top_n.strip())
         # in case out of index
         movie_list_len = len(self.movie_list)

@@ -16,7 +16,7 @@
 
             // Prevent form submission if not a valid number
             const top_n = parseInt(topnInput);
-            if (!Number.isInteger(topnInput)) {
+            if (isNaN(topnInput)|| !Number.isInteger(top_n)) {
                 event.preventDefault(); 
                 alert("Invalid input. Please make sure you enter a valid integer!");
                 return false;
