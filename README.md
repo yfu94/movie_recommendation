@@ -14,6 +14,7 @@ This project implements a Movie Recommendation System that provides users with m
 
 - **Dynamic Recommendations**: Suggest movies based on genre, rating, and user preferences.
 - **Search Capabilities**: Users can search by title, genre, or year.
+- **Display Preference**: Users can sort results based on their preference.
 - **Admin Controls**: Developers can add new movies to the database.
 - **Responsive Frontend**: Real-time input validation and feedback through JavaScript.
 - **Error Handling**: User-friendly messages for invalid or unexpected inputs.
